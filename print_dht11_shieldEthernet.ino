@@ -5,7 +5,7 @@
   #include "SPI.h" // Libairie communicatin SPI avec le Shield éthernet
   #include "Ethernet.h" // Librairie communication Ethernet sur un réseau local 
 
-  //On donne l'adresse MAC au shield Ethernet (ne doit pas être identique à une autre adresse MAC présente sur votre réseau)
+  //give random mac address to ethernet shield
   byte mac[] = { 0x10, 0x11, 0x12, 0x13, 0x14, 0x15 }; // Adresse MAC du shield Ethernet
 
   //On affecte l'adresse IP du Shield Ethernet
