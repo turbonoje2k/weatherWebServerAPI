@@ -8,10 +8,10 @@
   //give random mac address to ethernet shield
   byte mac[] = { 0x10, 0x11, 0x12, 0x13, 0x14, 0x15 }; // Adresse MAC du shield Ethernet
 
-  //On affecte l'adresse IP du Shield Ethernet
+  //give ip for you shield
   IPAddress ip(192,168,0, 39); // Adresse IP donné au Shield Ethernet
 
-  // On attribue la fonction serveur au Shield Ethernet sur le port 80
+  // open port 80
   EthernetServer local_server(80); // Le Shield devient un serveur sur le port 80 (port HTTP)
 
   
@@ -50,11 +50,11 @@ void respond_local_server()
     if (local_client) 
     {  
         boolean currentLineIsBlank = true;
-        while (local_client.connected()) // tant qu'un client est connecté
+        while (local_client.connected()) // while connected client
         {
-            if (local_client.available()) // Si un client a envoyé une requête
+            if (local_client.available()) // if client send request
             {   
-                char c = local_client.read(); // lire un caractère du client
+                char c = local_client.read(); // read client char
                 if (c == '\n' && currentLineIsBlank) // Quand la dernière ligne envoyée par le client est vide et suivi de \n on va lui répondre
                 {
                     // On envoie un entête http standard en réponse
