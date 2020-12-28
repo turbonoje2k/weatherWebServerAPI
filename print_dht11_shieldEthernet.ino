@@ -62,6 +62,7 @@ void respond_local_server()
                     local_client.println("Access-Control-Allow-Origin: *");
                     local_client.println("Content-Type: application/json");
                     local_client.println("Connection: close");
+                    local_client.println("Refresh: 5");
                     local_client.println();
 
                     // On envoie la valeur des capteur en format JSON
