@@ -104,7 +104,7 @@ void getJSON_DataFromSensors(char *sDataFromSensors)
        strcat(sDataFromSensors, " C \",");
     }
     else
-       strcat(sDataFromSensors, "\"Temperature\":\" erreur de lecture \",");
+       strcat(sDataFromSensors, "\"Temperature\":\" reading error \",");
 
     // Copy l'humidité de l'air dans la chaine de caractère JSON de retour
     char humidext[30] = "";
@@ -117,7 +117,7 @@ void getJSON_DataFromSensors(char *sDataFromSensors)
        strcat(sDataFromSensors, " % \"");
     }
     else
-        strcat(sDataFromSensors, "\"Humidity\":\" erreur de lecture \"");
+        strcat(sDataFromSensors, "\"Humidity\":\" reading error \"");
 
     // Une structure JSON se termine par une accolade
     strcat(sDataFromSensors, "}");  
