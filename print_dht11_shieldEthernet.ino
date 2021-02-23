@@ -1,18 +1,23 @@
+  // Library for sensor DHT 11
   #include "DHT.h"
+  // Libary communication SPI with the ethernet Shield
+  #include "SPI.h" 
+  // Library communication with LAN 
+  #include "Ethernet.h" 
+
   #define DHTPIN 8
   #define DHTTYPE DHT11
-  DHT dht(DHTPIN, DHTTYPE);//sensor declaration
-  #include "SPI.h" // Libairie communicatin SPI avec le Shield éthernet
-  #include "Ethernet.h" // Librairie communication Ethernet sur un réseau local 
-
+  //sensor declaration
+  DHT dht(DHTPIN, DHTTYPE);
+  
   //give random mac address to ethernet shield
-  byte mac[] = { 0x10, 0x11, 0x12, 0x13, 0x14, 0x15 }; // Adresse MAC du shield Ethernet
+  byte mac[] = { 0x10, 0x11, 0x12, 0x13, 0x14, 0x15 }; 
 
-  //give ip for you shield
-  IPAddress ip(192,168,0, 39); // Adresse IP donné au Shield Ethernet
+  //give ip address to ethernet shield
+  IPAddress ip(192,168,0, 39); // ethernet Shield IP
 
   // open port 80
-  EthernetServer local_server(80); // Le Shield devient un serveur sur le port 80 (port HTTP)
+  EthernetServer local_server(80); // Shield become a server on the port 80 (port HTTP)
 
   
 void setup() 
@@ -24,8 +29,8 @@ void setup()
   dht.begin();
 
   // DHT data
-int temperature=0;
-int humidity=0;
+  int temperature=0;
+  int humidity=0;
   
   // Start ethernet
   Serial.println("Getting IP");
@@ -57,7 +62,7 @@ void respond_local_server()
                 char c = local_client.read(); // read client char
                 if (c == '\n' && currentLineIsBlank) // Quand la dernière ligne envoyée par le client est vide et suivi de \n on va lui répondre
                 {
-                    // On envoie un entête http standard en réponse
+                    // send standard html header 
                     local_client.println("HTTP/1.1 200 OK");
                     local_client.println("Access-Control-Allow-Origin: *");
                     local_client.println("Content-Type: application/json");
@@ -87,38 +92,38 @@ void respond_local_server()
     }
 }
 
-// renvoie les données des capteurs en format JSON
+// send data on JSON 
 void getJSON_DataFromSensors(char *sDataFromSensors)
 {   
-    // Une structure JSON commence par une accolade
+    // start struct JSON with {
     strcpy(sDataFromSensors, "{");   
       
-    // Copy la température de l'air dans la chaine de caractère JSON de retour
+    // Copy temperature readi in json string
     char tempext[30] = "";
     double dTempExt = dht.readTemperature();
-    if(!isnan(dTempExt))  // Si la température a été correctement relevé
+    if(!isnan(dTempExt))  // if temp correctly read 
     {
        dtostrf(dTempExt, 0, 1, tempext);
        strcat(sDataFromSensors, "\"Temperature\":\" ");
        strcat(sDataFromSensors, tempext);
-       strcat(sDataFromSensors, " C \",");
+       strcat(sDataFromSensors, "  \",");
     }
     else
-       strcat(sDataFromSensors, "\"Temperature\":\" reading error \",");
+       strcat(sDataFromSensors, "\"Temperature\":\" /!\ reading error /!\ \");
 
-    // Copy l'humidité de l'air dans la chaine de caractère JSON de retour
+    // Copy humydity reading in a json  string
     char humidext[30] = "";
     double dHumidExt = dht.readHumidity();
-    if(!isnan(dHumidExt)) // Si l'humidité a été correctement relevé
+    if(!isnan(dHumidExt)) // if humidity correctly read
     {
        dtostrf(dHumidExt, 0, 0, humidext);
        strcat(sDataFromSensors, "\"Humidity\":\" ");
        strcat(sDataFromSensors, humidext);
-       strcat(sDataFromSensors, " % \"");
+       strcat(sDataFromSensors, "  \"");
     }
     else
-        strcat(sDataFromSensors, "\"Humidity\":\" reading error \"");
+        strcat(sDataFromSensors, "\"Humidity\":\"  /!\ reading error /!\ \");
 
-    // Une structure JSON se termine par une accolade
+    // stop struct JSON with }
     strcat(sDataFromSensors, "}");  
 }
