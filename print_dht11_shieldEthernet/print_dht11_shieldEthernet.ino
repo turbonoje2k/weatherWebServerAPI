@@ -60,7 +60,7 @@ void respond_local_server()
             if (local_client.available()) // if client send request
             {   
                 char c = local_client.read(); // read client char
-                if (c == '\n' && currentLineIsBlank) // Quand la dernière ligne envoyée par le client est vide et suivi de \n on va lui répondre
+                if (c == '\n' && currentLineIsBlank) // if char client the last ligne  is  \n sens HTML header
                 {
                     // send standard html header 
                     local_client.println("HTTP/1.1 200 OK");
@@ -70,7 +70,7 @@ void respond_local_server()
                     local_client.println("Refresh: 5");
                     local_client.println();
 
-                    // On envoie la valeur des capteur en format JSON
+                    // send datas in JSON file
                     char sPostData[150] = "";
                     getJSON_DataFromSensors(sPostData);
                     local_client.println(sPostData);
@@ -79,15 +79,15 @@ void respond_local_server()
                 }
                 
                 // every line of text received from the client ends with \r\n
-                if (c == '\n') // Si le caractère reçu est \n on positionne la variable currentLineIsBlank à vrai
+                if (c == '\n') // if character is \n -> var currentIsBank to true
                     currentLineIsBlank = true;
                 else 
-                    if (c != '\r') // Si le caractère reçu est \r on positionne la variable currentLineIsBlank à faux
+                    if (c != '\r') // if character is \r -> var currentIsBank to false
                         currentLineIsBlank = false;
             } 
         } 
         
-        delay(1000);      // On laisse 1s au browser pour récupérer les données qu'on a envoyées
+        delay(1000);      // 1 second to get the datas
         local_client.stop(); // ferme la connection
     }
 }
